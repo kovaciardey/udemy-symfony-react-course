@@ -5,6 +5,7 @@ namespace App\Controller;
 
 
 use App\Entity\BlogPost;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,22 +38,23 @@ class BlogController extends AbstractController
 
     /**
      * @Route ("/post/{id}", name="blog_by_id", requirements={"id"="\d+"})
+     * @ParamConverter ("post", class="App:BlogPost")
      */
-    public function post($id)
+    public function post(BlogPost $post)
     {
-        return $this->json(
-            $this->getDoctrine()->getRepository(BlogPost::class)->find($id)
-        );
+        // It's the same as doing find($id) from repository
+        return $this->json($post);
     }
 
     /**
      * @Route ("/post/{slug}", name="blog_by_slug")
+     * The annotation is not required when the $post variable is not typehinted weith BlogPost
+     * @ParamConverter ("post", class="App:BlogPost", options={"mapping": {"slug": "slug"}})
      */
-    public function postBySlug($slug)
+    public function postBySlug(BlogPost $post)
     {
-        return $this->json(
-            $this->getDoctrine()->getRepository(BlogPost::class)->findOneBy(['slug' => $slug])
-        );
+        // Same as findOneBy(["slug" => contents of {slug}])
+        return $this->json($post);
     }
 
     /**
