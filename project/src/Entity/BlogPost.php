@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BlogPostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -44,6 +45,16 @@ class BlogPost
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $slug;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="blogPost")
+     */
+    private $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -106,6 +117,18 @@ class BlogPost
     public function setAuthor(User $author): BlogPost
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getComments(): ArrayCollection
+    {
+        return $this->comments;
+    }
+
+    public function setComments(ArrayCollection $comments): BlogPost
+    {
+        $this->comments = $comments;
 
         return $this;
     }
