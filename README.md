@@ -17,3 +17,15 @@ php bin/console debug:router
 // generate entity
 php bin/console make:entity
 ```
+```
+// generate migration
+php bin/console make:migration
+```
+```
+// run migration
+php bin/console doctrine:migrations:migrate
+```
+```
+// run fixtures
+php bin/console doctrine:fixtures:load
+```
