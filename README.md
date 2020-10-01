@@ -28,4 +28,5 @@ php bin/console doctrine:migrations:migrate
 ```
 // run fixtures
 php bin/console doctrine:fixtures:load
+php bin/console doctrine:fixtures:load -q // QUICK LOAD without confiormation
 ```
