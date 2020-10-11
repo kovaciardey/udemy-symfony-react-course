@@ -34,3 +34,7 @@ php bin/console doctrine:fixtures:load -q // QUICK LOAD without confiormation
 // clear cache
 php ./bin/console cache:clear
 ```
+```
+// debug event subscribers
+php bin/console debug:container PasswordHashSubscriber
+```
