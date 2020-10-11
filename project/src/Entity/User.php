@@ -5,11 +5,15 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     itemOperations={"get"},
+ *     collectionOperations={}
+ * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User implements UserInterface
@@ -110,24 +114,24 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPosts(): ArrayCollection
+    public function getPosts(): Collection
     {
         return $this->posts;
     }
 
-    public function setPosts(ArrayCollection $posts): User
+    public function setPosts(Collection $posts): User
     {
         $this->posts = $posts;
 
         return $this;
     }
 
-    public function getComments(): ArrayCollection
+    public function getComments(): Collection
     {
         return $this->comments;
     }
 
-    public function setComments(ArrayCollection $comments): User
+    public function setComments(Collection $comments): User
     {
         $this->comments = $comments;
 
