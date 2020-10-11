@@ -5,11 +5,15 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BlogPostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BlogPostRepository", repositoryClass=BlogPostRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ *     itemOperations={"get"},
+ *     collectionOperations={"get"}
+ * )
  */
 class BlogPost
 {
@@ -121,7 +125,7 @@ class BlogPost
         return $this;
     }
 
-    public function getComments(): ArrayCollection
+    public function getComments(): Collection
     {
         return $this->comments;
     }
