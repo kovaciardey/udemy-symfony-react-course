@@ -30,3 +30,7 @@ php bin/console doctrine:migrations:migrate
 php bin/console doctrine:fixtures:load
 php bin/console doctrine:fixtures:load -q // QUICK LOAD without confiormation
 ```
+```
+// clear cache
+php ./bin/console cache:clear
+```
