@@ -17,9 +17,11 @@ security:
             stateless: true
             anonymous: true
             json_login:
-                #Here authentication will happen (token generation)
+                # Here authentication will happen (token generation)
                 check_path: /api/login_check
+                # Handle successful authentication
                 success_handler: lexik_jwt_authentication.handler.authentication_success
+                # Handle authentication failure
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
             guard:
                 authenticators:
