@@ -7,12 +7,23 @@ use App\Repository\BlogPostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BlogPostRepository", repositoryClass=BlogPostRepository::class)
  * @ApiResource(
- *     itemOperations={"get"},
- *     collectionOperations={"get"}
+ *     itemOperations={
+ *          "get",
+ *          "put"={
+ *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object.getAuthor() == user"
+ *          }
+ *      },
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY')"
+ *          }
+ *      }
  * )
  */
 class BlogPost
@@ -26,16 +37,22 @@ class BlogPost
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=10)
      */
     private $title;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
+     * @ Assert\DateTime() -> this breaks the post request. 'published needs to be of type string' <- the error that appears
      */
     private $published;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     * @Assert\Length(min=20)
      */
     private $content;
 
@@ -47,6 +64,7 @@ class BlogPost
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $slug;
 
