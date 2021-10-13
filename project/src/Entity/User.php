@@ -13,6 +13,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * use normalizationContext={"groups"={"get"}}
+ *      if you will return the same data for every operation
+ */
+
+/**
  * @ApiResource(
  *     itemOperations={
  *         "get"={
@@ -25,6 +30,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "access_control"="is_granted('IS_AUTHENTICATED_FULLY') and object == user",
  *              "denormalization_context"={
  *                  "groups"={"put"}
+ *              },
+ *              "normalization_context"={
+ *                  "groups"={"get"}
  *              }
  *          }
  *     },
@@ -32,6 +40,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "post"={
  *              "denormalization_context"={
  *                  "groups"={"post"}
+ *              },
+ *              "normalization_context"={
+ *                  "groups"={"get"}
  *              }
  *          }
  *      },
