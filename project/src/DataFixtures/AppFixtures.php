@@ -27,48 +27,48 @@ class AppFixtures extends Fixture
             'email' => 'admin@blog.com',
             'name' => 'Piotr Jura',
             'password' => 'Parola123',
-//            'roles' => [User::ROLE_SUPERADMIN],
-            'enabled' => true
+            'roles' => [User::ROLE_SUPERADMIN],
+//            'enabled' => true
         ],
         [
             'username' => 'john_doe',
             'email' => 'john@blog.com',
             'name' => 'John Doe',
             'password' => 'Parola123',
-//            'roles' => [User::ROLE_ADMIN],
-            'enabled' => true
+            'roles' => [User::ROLE_ADMIN],
+//            'enabled' => true
         ],
         [
             'username' => 'rob_smith',
             'email' => 'rob@blog.com',
             'name' => 'Rob Smith',
             'password' => 'Parola123',
-//            'roles' => [User::ROLE_WRITER],
-            'enabled' => true
+            'roles' => [User::ROLE_WRITER],
+//            'enabled' => true
         ],
         [
             'username' => 'jenny_rowling',
             'email' => 'jenny@blog.com',
             'name' => 'Jenny Rowling',
             'password' => 'Parola123',
-//            'roles' => [User::ROLE_WRITER],
-            'enabled' => true
+            'roles' => [User::ROLE_WRITER],
+//            'enabled' => true
         ],
         [
             'username' => 'han_solo',
             'email' => 'han@blog.com',
             'name' => 'Han Solo',
             'password' => 'Parola123',
-//            'roles' => [User::ROLE_EDITOR],
-            'enabled' => false
+            'roles' => [User::ROLE_EDITOR],
+//            'enabled' => false
         ],
         [
             'username' => 'jedi_knight',
             'email' => 'jedi@blog.com',
             'name' => 'Jedi Knight',
             'password' => 'Parola123',
-//            'roles' => [User::ROLE_COMMENTATOR],
-            'enabled' => true
+            'roles' => [User::ROLE_COMMENTATOR],
+//            'enabled' => true
         ],
     ];
 
@@ -95,7 +95,7 @@ class AppFixtures extends Fixture
             $blogPost->setPublished($this->faker->dateTimeThisYear);
             $blogPost->setContent($this->faker->realText());
 
-            $authorReference = $this->getRandomUserReference();
+            $authorReference = $this->getRandomUserReference($blogPost);
 
             $blogPost->setAuthor($authorReference);
             $blogPost->setSlug($this->faker->slug);
@@ -116,7 +116,7 @@ class AppFixtures extends Fixture
                 $comment->setContent($this->faker->realText());
                 $comment->setPublished($this->faker->dateTimeThisYear);
 
-                $authorReference = $this->getRandomUserReference();
+                $authorReference = $this->getRandomUserReference($comment);
 
                 $comment->setAuthor($authorReference);
                 $comment->setBlogPost($this->getReference("blog_post_$i"));
@@ -141,6 +141,8 @@ class AppFixtures extends Fixture
                 $userFixture['password']
             ));
 
+            $user->setRoles($userFixture['roles']);
+
             $this->addReference('user_' . $userFixture['username'], $user);
 
             $manager->persist($user);
@@ -149,8 +151,22 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    protected function getRandomUserReference(): User
+    protected function getRandomUserReference($entity): User
     {
-        return $this->getReference('user_' . self::USERS[rand(0, 3)]['username']);
+        // make the 5 the count of the USERS array
+        $randomUser = self::USERS[rand(0, 5)];
+
+        // these arrays could be made constants
+        if($entity instanceof BlogPost && !count(array_intersect($randomUser['roles'], [User::ROLE_SUPERADMIN, User::ROLE_ADMIN, User::ROLE_WRITER])))
+        {
+            return $this->getRandomUserReference($entity);
+        }
+
+        if($entity instanceof Comment && !count(array_intersect($randomUser['roles'], [User::ROLE_SUPERADMIN, User::ROLE_ADMIN, User::ROLE_WRITER, User::ROLE_COMMENTATOR])))
+        {
+            return $this->getRandomUserReference($entity);
+        }
+
+        return $this->getReference('user_' . $randomUser['username']);
     }
 }
