@@ -173,6 +173,11 @@ class User implements UserInterface
      */
     private $roles;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $passwordChangeDate;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
@@ -322,5 +327,14 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getPasswordChangeDate()
+    {
+        return $this->passwordChangeDate;
+    }
 
+    public function setPasswordChangeDate($passwordChangeDate)
+    {
+        $this->passwordChangeDate = $passwordChangeDate;
+        return $this;
+    }
 }
