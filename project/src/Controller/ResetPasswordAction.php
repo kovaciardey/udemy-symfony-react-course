@@ -6,6 +6,11 @@ namespace App\Controller;
 
 use ApiPlatform\Core\Validator\ValidatorInterface;
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ResetPasswordAction
 {
@@ -14,9 +19,32 @@ class ResetPasswordAction
      */
     private $validator;
 
-    public function __construct(ValidatorInterface $validator)
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $userPasswordEncoder;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+    /**
+     * @var JWTTokenManagerInterface
+     */
+    private $tokenManager;
+
+
+    public function __construct(
+        ValidatorInterface $validator,
+        UserPasswordEncoderInterface $userPasswordEncoder,
+        EntityManagerInterface $entityManager,
+        JWTTokenManagerInterface $tokenManager
+    )
     {
         $this->validator = $validator;
+        $this->userPasswordEncoder = $userPasswordEncoder;
+        $this->entityManager = $entityManager;
+        $this->tokenManager = $tokenManager;
     }
 
     public function __invoke(User $data)
@@ -25,6 +53,23 @@ class ResetPasswordAction
 //        var_dump($data->getName(), $data->getPassword());
 //        die();
 
+//        $context['groups'] = ['put-reset-password'];
         $this->validator->validate($data);
+
+        // set the password to the new one
+        $data->setPassword($this->userPasswordEncoder->encodePassword($data, $data->getNewPassword()));
+
+//        return $data;
+
+        $this->entityManager->flush();
+
+        $token = $this->tokenManager->create($data);
+
+        return new JsonResponse(['token' => $token]);
+
+        // Validator is only called after we return the data from this action
+        // Only here it checks for user current password, but we've just modified it
+
+        // Entity is persisted automatically, only if validation passes
     }
 }
