@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\BlogPost;
 use App\Entity\Comment;
 use App\Entity\User;
+use App\Security\TokenGenerator;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -21,6 +22,11 @@ class AppFixtures extends Fixture
      */
     private $faker;
 
+    /**
+     * @var TokenGenerator
+     */
+    private $tokenGenerator;
+
     private const USERS = [
         [
             'username' => 'admin',
@@ -28,7 +34,7 @@ class AppFixtures extends Fixture
             'name' => 'Piotr Jura',
             'password' => 'Parola123',
             'roles' => [User::ROLE_SUPERADMIN],
-//            'enabled' => true
+            'enabled' => true
         ],
         [
             'username' => 'john_doe',
@@ -36,7 +42,7 @@ class AppFixtures extends Fixture
             'name' => 'John Doe',
             'password' => 'Parola123',
             'roles' => [User::ROLE_ADMIN],
-//            'enabled' => true
+            'enabled' => true
         ],
         [
             'username' => 'rob_smith',
@@ -44,7 +50,7 @@ class AppFixtures extends Fixture
             'name' => 'Rob Smith',
             'password' => 'Parola123',
             'roles' => [User::ROLE_WRITER],
-//            'enabled' => true
+            'enabled' => true
         ],
         [
             'username' => 'jenny_rowling',
@@ -52,7 +58,7 @@ class AppFixtures extends Fixture
             'name' => 'Jenny Rowling',
             'password' => 'Parola123',
             'roles' => [User::ROLE_WRITER],
-//            'enabled' => true
+            'enabled' => true
         ],
         [
             'username' => 'han_solo',
@@ -60,7 +66,7 @@ class AppFixtures extends Fixture
             'name' => 'Han Solo',
             'password' => 'Parola123',
             'roles' => [User::ROLE_EDITOR],
-//            'enabled' => false
+            'enabled' => false
         ],
         [
             'username' => 'jedi_knight',
@@ -68,14 +74,18 @@ class AppFixtures extends Fixture
             'name' => 'Jedi Knight',
             'password' => 'Parola123',
             'roles' => [User::ROLE_COMMENTATOR],
-//            'enabled' => true
+            'enabled' => true
         ],
     ];
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(
+        UserPasswordEncoderInterface $passwordEncoder,
+        TokenGenerator $tokenGenerator
+    )
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->faker = \Faker\Factory::create();
+        $this->tokenGenerator = $tokenGenerator;
     }
 
     public function load(ObjectManager $manager)
@@ -142,7 +152,12 @@ class AppFixtures extends Fixture
             ));
 
             $user->setRoles($userFixture['roles']);
-            $user->setEnabled(true);
+            $user->setEnabled($userFixture['enabled']);
+
+            if (!$userFixture['enabled'])
+            {
+                $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
+            }
 
             $this->addReference('user_' . $userFixture['username'], $user);
 
