@@ -57,5 +57,7 @@ class UserRegisterSubscriber implements EventSubscriberInterface
 
         // Create confirmation token
         $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
+
+        // Send e-mail here
     }
 }
