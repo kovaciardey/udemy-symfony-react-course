@@ -31,16 +31,16 @@ class Mailer
     public function sendConfirmationEmail(User $user)
     {
         $body = $this->twig->render(
-            ':email:confirmation.html.twig',
+            '\email\confirmation.html.twig',
             [
                 'user' => $user
             ]
         );
 
-        $message = (new \Swift_Message('Hello From API PLATFORM!'))
+        $message = (new \Swift_Message('Please confirm your account!'))
             ->setFrom('andreikovacidev@gmail.com') // could make an environment variable
             ->setTo($user->getEmail())
-            ->setBody($body);
+            ->setBody($body, 'text/html');
 
         $this->mailer->send($message);
     }
