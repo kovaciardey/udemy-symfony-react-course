@@ -65,11 +65,11 @@ class UserRegisterSubscriber implements EventSubscriberInterface
         $user->setConfirmationToken($this->tokenGenerator->getRandomSecureToken());
 
         // Send e-mail here
-        $message = (new \Swift_Message('Hello From API PLATFORM!'))
-            ->setFrom('andreikovacidev@gmail.com')
-            ->setTo('andreikovacidev@gmail.com')
-            ->setBody('Hello, how are you?');
-
-        $this->mailer->send($message);
+//        $message = (new \Swift_Message('Hello From API PLATFORM!'))
+//            ->setFrom('andreikovacidev@gmail.com')
+//            ->setTo('andreikovacidev@gmail.com')
+//            ->setBody('Hello, how are you?');
+//
+//        $this->mailer->send($message);
     }
 }
