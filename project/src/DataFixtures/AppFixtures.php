@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
+    private const EMAIL = 'andreikovacidev@gmail.com';
+
     /**
      * @var UserPasswordEncoderInterface
      */
@@ -30,7 +32,7 @@ class AppFixtures extends Fixture
     private const USERS = [
         [
             'username' => 'admin',
-            'email' => 'admin@blog.com',
+            'email' => self::EMAIL,
             'name' => 'Piotr Jura',
             'password' => 'Parola123',
             'roles' => [User::ROLE_SUPERADMIN],
@@ -38,7 +40,7 @@ class AppFixtures extends Fixture
         ],
         [
             'username' => 'john_doe',
-            'email' => 'john@blog.com',
+            'email' => self::EMAIL,
             'name' => 'John Doe',
             'password' => 'Parola123',
             'roles' => [User::ROLE_ADMIN],
@@ -46,7 +48,7 @@ class AppFixtures extends Fixture
         ],
         [
             'username' => 'rob_smith',
-            'email' => 'rob@blog.com',
+            'email' => self::EMAIL,
             'name' => 'Rob Smith',
             'password' => 'Parola123',
             'roles' => [User::ROLE_WRITER],
@@ -54,7 +56,7 @@ class AppFixtures extends Fixture
         ],
         [
             'username' => 'jenny_rowling',
-            'email' => 'jenny@blog.com',
+            'email' => self::EMAIL,
             'name' => 'Jenny Rowling',
             'password' => 'Parola123',
             'roles' => [User::ROLE_WRITER],
@@ -62,7 +64,7 @@ class AppFixtures extends Fixture
         ],
         [
             'username' => 'han_solo',
-            'email' => 'han@blog.com',
+            'email' => self::EMAIL,
             'name' => 'Han Solo',
             'password' => 'Parola123',
             'roles' => [User::ROLE_EDITOR],
@@ -70,7 +72,7 @@ class AppFixtures extends Fixture
         ],
         [
             'username' => 'jedi_knight',
-            'email' => 'jedi@blog.com',
+            'email' => self::EMAIL,
             'name' => 'Jedi Knight',
             'password' => 'Parola123',
             'roles' => [User::ROLE_COMMENTATOR],
