@@ -6,6 +6,18 @@ api_platform:
     swagger:
         versions: [3]
 
-#    change the name of the ordering parameter globally
-#    collection:
-#        order_parameter_name: '_order'
+    collection:
+#        order_parameter_name: '_order' change the name of the ordering parameter globally
+        pagination:
+#            enabled: false
+            page_parameter_name: _page
+#            client_enabled: true
+#            enabled_parameter_name: pagination
+#            items_per_page: 4
+            items_per_page: 10
+            client_items_per_page: true # disabled by default
+            items_per_page_parameter_name: itemsPerPage
+            maximum_items_per_page: 20
+            partial: false # only shows the next page of items
+            client_partial: true
+            partial_parameter_name: 'partial'
