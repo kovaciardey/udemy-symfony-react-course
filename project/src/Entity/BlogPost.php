@@ -16,6 +16,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 
 // ipartial for the filtering to make the system case sensitive
 
@@ -48,6 +49,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     arguments={"orderParameterName"="_order"}
  * )
+ * @ApiFilter (PropertyFilter::class, arguments={
+ *      "parameterName": "properties",
+ *      "overrideDefaultProperties": false,
+ *      "whitelist": {"id", "author", "slug", "title", "content"}
+ * })
  * @ApiResource(
  *     attributes={"order"={"published": "DESC"}},
  *     itemOperations={
