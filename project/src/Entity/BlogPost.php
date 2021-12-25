@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 
 // ipartial for the filtering to make the system case sensitive
 
@@ -34,6 +35,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
  *          "published"
  *     }
  * )
+ *
+ * @ApiFilter (RangeFilter::class, properties={"id"})
  * @ApiResource(
  *     attributes={"order"={"published": "DESC"}},
  *     itemOperations={
