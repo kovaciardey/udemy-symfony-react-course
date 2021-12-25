@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use App\Repository\BlogPostRepository;
@@ -11,9 +12,21 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+
+// ipartial for the filtering to make the system case sensitive
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BlogPostRepository", repositoryClass=BlogPostRepository::class)
+ * @ApiFilter(
+ *     SearchFilter::class,
+ *     properties={
+ *          "id": "exact",
+ *          "title": "partial",
+ *          "content": "partial",
+ *          "author": "exact"
+ *     }
+ * )
  * @ApiResource(
  *     attributes={"order"={"published": "DESC"}},
  *     itemOperations={
