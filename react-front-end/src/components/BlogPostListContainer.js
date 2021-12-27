@@ -1,29 +1,25 @@
 import React from 'react';
 import BlogPostList from "./BlogPostList";
+import {blogPostAdd, blogPostList} from "../actions/actions";
+import {connect} from "react-redux";
+
+const mapStateToProps = state => ({
+    ...state.blogPostList
+});
+
+const mapDispatchToProps = {
+    blogPostList,
+    blogPostAdd
+}
 
 class BlogPostListContainer extends React.Component {
-    constructor(props) {
-        super(props);
-        console.log(props)
-        this.posts = [
-            {
-                id: 1,
-                title: "Hello"
-            },
-            {
-                id: 2,
-                title: "Another Post"
-            },
-            {
-                id: 3,
-                title: "Another Hello"
-            }
-        ];
+    componentDidMount() {
+        this.props.blogPostList();
     }
 
     render() {
-        return (<BlogPostList posts={this.posts} />)
+        return (<BlogPostList posts={this.props.posts} />)
     }
 }
 
-export default BlogPostListContainer;
+export default connect(mapStateToProps, mapDispatchToProps)(BlogPostListContainer);
